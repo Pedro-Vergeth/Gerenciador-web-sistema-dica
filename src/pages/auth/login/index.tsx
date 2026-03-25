@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import { MailIcon, LockIcon, EyeIcon, InfoIcon } from '../../../components/icons/iconLogin';
@@ -17,9 +18,14 @@ export default function LoginPage() {
     
         try {
             await auth.login({ email, password });
-            navigate('../dashboard');
-        } catch (error) {
-            setErro(error.response?.data?.message || 'Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+            navigate('/main/dashboard');
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error)) {
+                setErro(error.response?.data?.message || 'Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
+                return;
+            }
+
+            setErro(error instanceof Error ? error.message : 'Ocorreu um erro ao tentar fazer login. Por favor, tente novamente.');
         }
     };
 
@@ -32,12 +38,12 @@ export default function LoginPage() {
                 <img
                     src="/src/assets/loginScreenImage.png"
                     alt="Login Imagem"
-                    className="w-full max-w-[582px] h-auto object-contain"
+                    className="w-full max-w-145.5 h-auto object-contain"
                 />
             </div>
 
             <div className="w-4/10 bg-white flex items-center justify-center">
-                <form onSubmit={handleSubmit} className="w-full max-w-[400px]">
+                <form onSubmit={handleSubmit} className="w-full max-w-100">
                     <div>
                         <h2 className="text-2xl font-medium text-center text-[28px] mb-1">
                             Entrar

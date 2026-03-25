@@ -1,14 +1,18 @@
 import axios from "axios";
 
+export function getAuthToken() {
+  return localStorage.getItem('@dica-api:token') ?? localStorage.getItem('@Dica API:token');
+}
+
 export const api = axios.create({
-    baseURL: "http://localhost:8080/api",
+  baseURL: "/api",
     headers: {
         "Content-Type": "application/json",
     },
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('@dica-api:token');
+  const token = getAuthToken();
   
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;

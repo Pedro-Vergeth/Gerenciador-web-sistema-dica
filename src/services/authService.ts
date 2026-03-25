@@ -1,3 +1,4 @@
+import axios from "axios";
 import { api } from "./api";
 import type { LoginRequestDTO, LoginResponseDTO } from "../types/auth";
 export const auth = {
@@ -7,13 +8,14 @@ export const auth = {
             const response = await api.post<LoginResponseDTO>("/gerenciador/auth/login", data);
             const { token } = response.data;
     
+            localStorage.setItem("@dica-api:token", token);
             localStorage.setItem("@Dica API:token", token);
             console.log("Token armazenado com sucesso:");
             return response.data;
     
-        } catch (error) {
-            if (error.response.data.message && error.response.data.status) {
-                let errorStatus = error.response.data.status;
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.data?.message && error.response?.data?.status) {
+                const errorStatus = error.response.data.status;
                 console.log("Erro ao fazer login:", error.response.data.status, error.response.data.message);
                 if (errorStatus === 401) {
                     throw new Error('Credenciais inválidas. Por favor, verifique seu email e senha e tente novamente.');
@@ -24,6 +26,7 @@ export const auth = {
     },
 
     async logout() {
+        localStorage.removeItem("@dica-api:token");
         localStorage.removeItem("@Dica API:token");
     }
 }
