@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { createUser, deleteUser, getUsers, type CreateUserRequestDTO, type PageResponse, type UserItem } from '../../../services/usersService.ts';
 import { auth } from '../../../services/authService.ts';
 import { AddUserIcon, EditIcon, MoonIcon, NotificationIcon, SearchIcon, TrashIcon, UserIcon } from '../../../components/icons/sharedIcons';
-import sistemaImage from '../../../assets/hero.png';
+import sistemaImage from '../../../assets/logo.png';
 
 export default function UsersPage() {
   const navigate = useNavigate();
@@ -138,7 +138,7 @@ export default function UsersPage() {
           <img
             src={sistemaImage}
             alt="Sistema"
-            className="h-20 w-20 rounded-2xl object-cover shadow-sm"
+            className="h-24 w-24 rounded-2xl object-contain shadow-sm"
           />
           <h2 className="text-center text-lg font-semibold text-slate-800">
             Gerenciador Web
@@ -303,8 +303,8 @@ export default function UsersPage() {
           <div className="flex-1" />
         
           <footer className="mt-auto flex items-center justify-center gap-3 rounded-b-none bg-[#efefef] text-sm text-slate-700">
-            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-cover" />
-            <span>© 2025 [Nome da sua Empresa/App]. Todos os direitos reservados.</span>
+            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-contain" />
+            <span>© 2025 Dica. Todos os direitos reservados.</span>
           </footer>
         </section>
       </div>

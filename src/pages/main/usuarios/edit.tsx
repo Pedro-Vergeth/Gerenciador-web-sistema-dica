@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { MoonIcon, NotificationIcon, SearchIcon, UserIcon } from '../../../components/icons/sharedIcons';
 import { auth } from '../../../services/authService.ts';
 import { getUserById, updateUser, type CreateUserRequestDTO, type UpdateUserRequestDTO } from '../../../services/usersService.ts';
-import sistemaImage from '../../../assets/hero.png';
+import sistemaImage from '../../../assets/logo.png';
 
 type EditUserForm = Omit<CreateUserRequestDTO, 'password'>;
 
@@ -100,7 +100,7 @@ export default function EditUserPage() {
 					<img
 						src={sistemaImage}
 						alt="Sistema"
-						className="h-20 w-20 rounded-2xl object-cover shadow-sm"
+						className="h-24 w-24 rounded-2xl object-contain shadow-sm"
 					/>
 					<h2 className="text-center text-lg font-semibold text-slate-800">
 						Gerenciador Web
@@ -244,8 +244,8 @@ export default function EditUserPage() {
 					</div>
 
 					<footer className="flex items-center justify-center gap-3 rounded-b-none bg-[#efefef] text-sm text-slate-700">
-						<img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-cover" />
-						<span>© 2025 [Nome da sua Empresa/App]. Todos os direitos reservados.</span>
+						<img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-contain" />
+						<span>© 2025 Dica. Todos os direitos reservados.</span>
 					</footer>
 				</section>
 			</div>

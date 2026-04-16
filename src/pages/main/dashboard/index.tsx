@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import DashboardCard from '../../../components/dashboard';
 import { DocIcon, MoonIcon, NotificationIcon, SearchIcon, UserIcon } from '../../../components/icons/sharedIcons';
-import sistemaImage from '../../../assets/hero.png';
+import sistemaImage from '../../../assets/logo.png';
 import { auth } from '../../../services/authService.ts';
 
 export default function Dashboard() {
@@ -19,7 +19,7 @@ export default function Dashboard() {
           <img
             src={sistemaImage}
             alt="Sistema"
-            className="w-20 h-20 rounded-2xl object-cover shadow-sm"
+            className="h-24 w-24 rounded-2xl object-contain shadow-sm"
           />
           <h2 className="text-lg font-semibold text-slate-800 text-center">
             Gerenciador Web
@@ -129,8 +129,8 @@ export default function Dashboard() {
           </div>
 
           <footer className="flex items-center justify-center gap-3 rounded-b-none bg-[#efefef] text-sm text-slate-700">
-            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-cover" />
-            <span>© 2025 [Nome da sua Empresa/App]. Todos os direitos reservados.</span>
+            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-contain" />
+            <span>© 2025 Dica. Todos os direitos reservados.</span>
           </footer>
         </section>
 

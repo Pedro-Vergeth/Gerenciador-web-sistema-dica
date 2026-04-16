@@ -4,7 +4,8 @@ import type { LoginRequestDTO, LoginResponseDTO } from '../types/auth';
 
 const login = async (data: LoginRequestDTO) => {
     try {
-        const response = await api.post<LoginResponseDTO>('/gerenciador/auth/login', data);
+        console.log('Iniciando processo de login para email:', data.email);
+        const response = await api.post<LoginResponseDTO>('gerenciador/auth/login', data);
         const { token } = response.data;
 
         localStorage.setItem('@dica-api:token', token);

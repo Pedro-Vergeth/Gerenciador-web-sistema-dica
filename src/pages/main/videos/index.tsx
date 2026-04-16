@@ -2,7 +2,7 @@ import { type FormEvent, useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { InfoIcon } from '../../../components/icons/iconLogin.tsx';
 import { AddUserIcon, EditIcon, MoonIcon, NotificationIcon, SearchIcon, TrashIcon, UserIcon } from '../../../components/icons/sharedIcons';
-import sistemaImage from '../../../assets/hero.png';
+import sistemaImage from '../../../assets/logo.png';
 import { auth } from '../../../services/authService.ts';
 import { createVideo, deleteVideo, getVideos } from '../../../services/videosService.ts';
 import type { CreateVideoRequestDTO, VideoForm, VideoItem } from '../../../types/videos.ts';
@@ -193,7 +193,7 @@ export default function VideosPage() {
     <div className="flex min-h-screen w-full bg-[#F5F5F5]">
       <aside className="flex min-h-screen w-3/20 flex-col bg-white p-6 shadow-md">
         <div className="flex flex-col items-center gap-3 border-b border-gray-100 pb-6">
-          <img src={sistemaImage} alt="Sistema" className="h-20 w-20 rounded-2xl object-cover shadow-sm" />
+          <img src={sistemaImage} alt="Sistema" className="h-24 w-24 rounded-2xl object-contain shadow-sm" />
           <h2 className="text-center text-lg font-semibold text-slate-800">Gerenciador Web</h2>
         </div>
 
@@ -301,8 +301,8 @@ export default function VideosPage() {
           <div className="flex-1" />
 
           <footer className="flex items-center justify-center gap-3 rounded-b-none bg-[#efefef] text-sm text-slate-700">
-            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-cover" />
-            <span>© 2025 [Nome da sua Empresa/App]. Todos os direitos reservados.</span>
+            <img src={sistemaImage} alt="Logo do sistema" className="h-8 w-8 rounded-md object-contain" />
+            <span>© 2025 Dica. Todos os direitos reservados.</span>
           </footer>
         </section>
       </div>
