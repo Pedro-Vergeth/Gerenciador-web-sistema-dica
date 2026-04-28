@@ -12,6 +12,7 @@ export type FoodItem = {
   nomePrincipal: string;
   sinonimos: string;
   porcao: string;
+  quantidade: number | null;
   medidaCaseira: string;
   textoInformativo: string;
   grupoAlimentar: GrupoAlimentar;
@@ -22,14 +23,22 @@ export type CreateFoodRequestDTO = {
   nomePrincipal: string;
   sinonimos: string;
   porcao: string;
+  quantidade: number;
   medidaCaseira: string;
   textoInformativo: string;
   grupoAlimentar: GrupoAlimentarOption;
   imagem: File | null;
 };
 
-export type FoodForm = Omit<CreateFoodRequestDTO, 'grupoAlimentar'> & {
+export type FoodForm = {
+  nomePrincipal: string;
+  sinonimos: string;
+  porcao: string;
+  quantidade: number | '';
+  medidaCaseira: string;
+  textoInformativo: string;
   grupoAlimentar: CreateFoodRequestDTO['grupoAlimentar'] | '';
+  imagem: File | null;
 };
 
 export type EditFoodForm = FoodForm;
@@ -39,6 +48,7 @@ export type UpdateFoodRequestDTO = {
   nomePrincipal?: string;
   sinonimos?: string;
   porcao?: string;
+  quantidade?: number;
   medidaCaseira?: string;
   textoInformativo?: string;
   grupoAlimentar?: GrupoAlimentarOption;

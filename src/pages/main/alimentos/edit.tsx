@@ -50,6 +50,7 @@ export default function EditFoodPage() {
     nomePrincipal: '',
     sinonimos: '',
     porcao: '',
+    quantidade: '',
     medidaCaseira: '',
     textoInformativo: '',
     grupoAlimentar: '',
@@ -79,6 +80,7 @@ export default function EditFoodPage() {
           nomePrincipal: food.nomePrincipal,
           sinonimos: food.sinonimos,
           porcao: food.porcao,
+          quantidade: food.quantidade ?? '',
           medidaCaseira: food.medidaCaseira,
           textoInformativo: food.textoInformativo,
           grupoAlimentar: normalizeFoodGroupValue(food.grupoAlimentar),
@@ -111,6 +113,7 @@ export default function EditFoodPage() {
         nomePrincipal: foodData.nomePrincipal,
         sinonimos: foodData.sinonimos,
         porcao: foodData.porcao,
+        quantidade: foodData.quantidade === '' ? undefined : Number(foodData.quantidade),
         medidaCaseira: foodData.medidaCaseira,
         textoInformativo: foodData.textoInformativo,
         grupoAlimentar: foodData.grupoAlimentar || undefined,
@@ -198,6 +201,11 @@ export default function EditFoodPage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700">Porção</label>
                   <input type="text" placeholder="Digite a porção" value={foodData.porcao} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, porcao: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={foodData.quantidade} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, quantidade: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>

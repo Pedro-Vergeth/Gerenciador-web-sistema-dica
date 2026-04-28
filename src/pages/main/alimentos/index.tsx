@@ -58,6 +58,7 @@ export default function FoodsPage() {
     nomePrincipal: '',
     sinonimos: '',
     porcao: '',
+    quantidade: '',
     medidaCaseira: '',
     textoInformativo: '',
     grupoAlimentar: '',
@@ -111,6 +112,7 @@ export default function FoodsPage() {
       nomePrincipal: '',
       sinonimos: '',
       porcao: '',
+      quantidade: '',
       medidaCaseira: '',
       textoInformativo: '',
       grupoAlimentar: '',
@@ -130,6 +132,12 @@ export default function FoodsPage() {
       return;
     }
 
+    if (formData.quantidade === '' || Number.isNaN(Number(formData.quantidade))) {
+      setFormError('Informe uma quantidade válida.');
+      setIsSavingFood(false);
+      return;
+    }
+
     if (!formData.grupoAlimentar) {
       setFormError('Selecione um grupo alimentar válido.');
       setIsSavingFood(false);
@@ -137,7 +145,16 @@ export default function FoodsPage() {
     }
 
     try {
-      await createFood(formData as CreateFoodRequestDTO);
+      await createFood({
+        nomePrincipal: formData.nomePrincipal,
+        sinonimos: formData.sinonimos,
+        porcao: formData.porcao,
+        quantidade: Number(formData.quantidade),
+        medidaCaseira: formData.medidaCaseira,
+        textoInformativo: formData.textoInformativo,
+        grupoAlimentar: formData.grupoAlimentar,
+        imagem: formData.imagem,
+      });
       handleCloseCreateFood();
       await loadFoods(currentPage, searchTerm.trim());
     } catch {
@@ -321,15 +338,16 @@ export default function FoodsPage() {
                     <th className="px-2 py-4 font-normal">Imagem</th>
                     <th className="px-2 py-4 font-normal">Nome principal</th>
                     <th className="px-2 py-4 font-normal">Sinônimos</th>
-                    <th className="px-2 py-4 font-normal">Grupo alimentar</th>
+                    <th className="px-2 py-4 font-normal">Quantidade</th>
                     <th className="px-2 py-4 font-normal">Porção</th>
+                    <th className="px-2 py-4 font-normal">Grupo alimentar</th>
                     <th className="px-2 py-4 font-normal text-center">Ações</th>
                   </tr>
                 </thead>
                 <tbody className="text-sm text-slate-900">
                   {loading ? (
                     <tr className="border-b border-slate-200 bg-white">
-                      <td className="px-6 py-6 text-slate-500" colSpan={6}>Carregando alimentos...</td>
+                      <td className="px-6 py-6 text-slate-500" colSpan={7}>Carregando alimentos...</td>
                     </tr>
                   ) : foods.length > 0 ? (
                     foods.map((food) => (
@@ -338,8 +356,9 @@ export default function FoodsPage() {
                         imagePreview={getFoodImagePreview(food.imagem64)}
                         nomePrincipal={food.nomePrincipal}
                         sinonimos={food.sinonimos}
-                        grupoAlimentar={getGrupoAlimentarLabel(food.grupoAlimentar)}
+                        quantidade={food.quantidade}
                         porcao={food.porcao}
+                        grupoAlimentar={getGrupoAlimentarLabel(food.grupoAlimentar)}
                         onView={() => handleOpenFoodDetails(food)}
                         onEdit={() => navigate(`/main/alimentos/edit/${food.id}`)}
                         onDelete={() => handleOpenDeleteFood(food)}
@@ -347,7 +366,7 @@ export default function FoodsPage() {
                     ))
                   ) : (
                     <tr className="border-b border-slate-200 bg-white">
-                      <td className="px-6 py-6 text-slate-500" colSpan={6}>Nenhum alimento encontrado.</td>
+                      <td className="px-6 py-6 text-slate-500" colSpan={7}>Nenhum alimento encontrado.</td>
                     </tr>
                   )}
                 </tbody>
@@ -413,6 +432,7 @@ export default function FoodsPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <DetailCard label="Sinônimos" value={selectedFood.sinonimos || '-'} />
                   <DetailCard label="Porção" value={selectedFood.porcao || '-'} />
+                  <DetailCard label="Quantidade" value={selectedFood.quantidade === null || selectedFood.quantidade === undefined ? '-' : String(selectedFood.quantidade)} />
                   <DetailCard label="Medida caseira" value={selectedFood.medidaCaseira || '-'} />
                   <DetailCard label="Grupo alimentar" value={selectedFood.grupoAlimentar ? getGrupoAlimentarLabel(selectedFood.grupoAlimentar) : '-'} />
                 </div>
@@ -563,6 +583,11 @@ export default function FoodsPage() {
                 </div>
 
                 <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={formData.quantidade} onChange={(event) => setFormData((current) => ({ ...current, quantidade: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700">Medida caseira</label>
                   <input type="text" placeholder="Digite a medida caseira" value={formData.medidaCaseira} onChange={(event) => setFormData((current) => ({ ...current, medidaCaseira: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
@@ -594,7 +619,7 @@ export default function FoodsPage() {
   );
 }
 
-function FoodRow({ imagePreview, nomePrincipal, sinonimos, grupoAlimentar, porcao, onView, onEdit, onDelete }: { imagePreview: string; nomePrincipal: string; sinonimos: string; grupoAlimentar: string; porcao: string; onView: () => void; onEdit: () => void; onDelete: () => void; }) {
+function FoodRow({ imagePreview, nomePrincipal, sinonimos, quantidade, porcao, grupoAlimentar, onView, onEdit, onDelete }: { imagePreview: string; nomePrincipal: string; sinonimos: string; quantidade: number | null; porcao: string; grupoAlimentar: string; onView: () => void; onEdit: () => void; onDelete: () => void; }) {
   return (
     <tr className="border-b border-slate-200 bg-white">
       <td className="px-2 py-6">
@@ -612,8 +637,9 @@ function FoodRow({ imagePreview, nomePrincipal, sinonimos, grupoAlimentar, porca
       </td>
       <td className="px-2 py-6 font-medium text-slate-900">{nomePrincipal}</td>
       <td className="px-2 py-6 text-slate-700">{sinonimos || '-'}</td>
-      <td className="px-2 py-6 text-slate-700">{grupoAlimentar}</td>
+      <td className="px-2 py-6 text-slate-700">{quantidade === null || quantidade === undefined ? '-' : quantidade}</td>
       <td className="px-2 py-6 text-slate-700">{porcao}</td>
+      <td className="px-2 py-6 text-slate-700">{grupoAlimentar}</td>
       <td className="px-2 py-6">
         <div className="flex items-center justify-center gap-4">
           <button type="button" onClick={onView} aria-label={`Visualizar alimento ${nomePrincipal}`} className="text-slate-500 transition-colors hover:text-blue-600">

@@ -25,6 +25,7 @@ const normalizeRecipeItem = (responseData: RecipeApiResponse): RecipeItem => {
     tipoRefeicao: recipe.tipoRefeicao ?? '',
     tempoPreparoMinutos: recipe.tempoPreparoMinutos ?? null,
     porcao: recipe.porcao ?? '',
+    rendimento: recipe.rendimento ?? '',
     grupoAlimentar: recipe.grupoAlimentar ?? null,
     ingredientes: recipe.ingredientes ?? '',
     modoPreparo: recipe.modoPreparo ?? '',
@@ -48,6 +49,7 @@ const buildRecipeFormData = (data: CreateRecipeRequestDTO | UpdateRecipeRequestD
   }
 
   formData.append('porcao', data.porcao);
+  formData.append('rendimento', data.rendimento);
   formData.append('grupoAlimentar', data.grupoAlimentar);
   formData.append('ingredientes', data.ingredientes);
   formData.append('modoPreparo', data.modoPreparo);

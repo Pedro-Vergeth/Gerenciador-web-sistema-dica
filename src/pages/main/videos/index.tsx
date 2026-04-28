@@ -58,6 +58,7 @@ export default function VideosPage() {
   const [deleteVideoTarget, setDeleteVideoTarget] = useState<VideoItem | null>(null);
   const [formData, setFormData] = useState<VideoForm>({
     titulo: '',
+    descricao: '',
     duracaoSegundos: '',
     videoUrl: '',
   });
@@ -101,6 +102,7 @@ export default function VideosPage() {
     setFormError('');
     setFormData({
       titulo: '',
+      descricao: '',
       duracaoSegundos: '',
       videoUrl: '',
     });
@@ -166,7 +168,7 @@ export default function VideosPage() {
     setIsSavingVideo(true);
     setFormError('');
 
-    if (!formData.titulo.trim() || !formData.videoUrl.trim()) {
+    if (!formData.titulo.trim() || !formData.descricao.trim() || !formData.videoUrl.trim()) {
       setFormError('Preencha os campos obrigatórios do vídeo.');
       setIsSavingVideo(false);
       return;
@@ -175,6 +177,7 @@ export default function VideosPage() {
     try {
       const payload: CreateVideoRequestDTO = {
         titulo: formData.titulo,
+        descricao: formData.descricao,
         duracaoSegundos: formData.duracaoSegundos === '' ? null : Number(formData.duracaoSegundos),
         videoUrl: formData.videoUrl,
       };
@@ -354,6 +357,8 @@ export default function VideosPage() {
                   <DetailCard label="Duração" value={formatDuration(selectedVideo.duracaoSegundos)} />
                   <DetailCard label="URL do vídeo" value={selectedVideo.videoUrl} />
                 </div>
+
+                <DetailSection title="Descrição" value={selectedVideo.descricao} />
               </div>
             </div>
           </div>
@@ -478,6 +483,11 @@ export default function VideosPage() {
                   <input type="text" placeholder="Digite o título" value={formData.titulo} onChange={(event) => setFormData((current) => ({ ...current, titulo: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
+                <div className="lg:col-span-2">
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Descrição</label>
+                  <textarea placeholder="Digite a descrição" value={formData.descricao} onChange={(event) => setFormData((current) => ({ ...current, descricao: event.target.value }))} className="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700">Duração em segundos</label>
                   <input type="number" min="0" placeholder="Ex.: 120" value={formData.duracaoSegundos} onChange={(event) => setFormData((current) => ({ ...current, duracaoSegundos: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
@@ -533,6 +543,15 @@ function DetailCard({ label, value }: { label: string; value: string; }) {
     <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
       <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
       <p className="mt-2 text-sm font-medium leading-6 text-slate-900">{value || '-'}</p>
+    </div>
+  );
+}
+
+function DetailSection({ title, value }: { title: string; value: string; }) {
+  return (
+    <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{title}</p>
+      <p className="mt-3 whitespace-pre-line text-sm leading-7 text-slate-700">{value || '-'}</p>
     </div>
   );
 }

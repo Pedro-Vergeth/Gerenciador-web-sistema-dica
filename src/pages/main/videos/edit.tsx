@@ -24,6 +24,7 @@ function formatDuration(seconds: number | null) {
 function normalizeVideo(video: VideoItem) {
   return {
     titulo: video.titulo,
+    descricao: video.descricao,
     duracaoSegundos: video.duracaoSegundos ?? '',
     videoUrl: video.videoUrl,
   } satisfies EditVideoForm;
@@ -51,6 +52,7 @@ export default function EditVideoPage() {
   const [formError, setFormError] = useState('');
   const [videoData, setVideoData] = useState<EditVideoForm>({
     titulo: '',
+    descricao: '',
     duracaoSegundos: '',
     videoUrl: '',
   });
@@ -95,13 +97,14 @@ export default function EditVideoPage() {
         throw new Error('ID do vídeo não informado.');
       }
 
-      if (!videoData.titulo.trim() || !videoData.videoUrl.trim()) {
+      if (!videoData.titulo.trim() || !videoData.descricao.trim() || !videoData.videoUrl.trim()) {
         throw new Error('Preencha os campos obrigatórios do vídeo.');
       }
 
       const payload: UpdateVideoRequestDTO = {
         id,
         titulo: videoData.titulo,
+        descricao: videoData.descricao,
         duracaoSegundos: videoData.duracaoSegundos === '' ? null : Number(videoData.duracaoSegundos),
         videoUrl: videoData.videoUrl,
       };
@@ -178,6 +181,11 @@ export default function EditVideoPage() {
                 <div className="lg:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-slate-700">Título</label>
                   <input type="text" placeholder="Digite o título" value={videoData.titulo} disabled={isLoadingVideo} onChange={(event) => setVideoData((current) => ({ ...current, titulo: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div className="lg:col-span-2">
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Descrição</label>
+                  <textarea placeholder="Digite a descrição" value={videoData.descricao} disabled={isLoadingVideo} onChange={(event) => setVideoData((current) => ({ ...current, descricao: event.target.value }))} className="min-h-28 w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>

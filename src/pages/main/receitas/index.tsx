@@ -78,6 +78,7 @@ export default function RecipesPage() {
     tipoRefeicao: '',
     tempoPreparoMinutos: '',
     porcao: '',
+    rendimento: '',
     grupoAlimentar: '',
     ingredientes: '',
     modoPreparo: '',
@@ -130,6 +131,7 @@ export default function RecipesPage() {
       tipoRefeicao: '',
       tempoPreparoMinutos: '',
       porcao: '',
+        rendimento: '',
       grupoAlimentar: '',
       ingredientes: '',
       modoPreparo: '',
@@ -225,7 +227,7 @@ export default function RecipesPage() {
     setIsSavingRecipe(true);
     setFormError('');
 
-    if (!formData.titulo.trim() || !formData.tipoRefeicao || !formData.grupoAlimentar || !formData.ingredientes.trim() || !formData.modoPreparo.trim() || !formData.idEstado) {
+    if (!formData.titulo.trim() || !formData.tipoRefeicao || !formData.porcao.trim() || !formData.rendimento.trim() || !formData.grupoAlimentar || !formData.ingredientes.trim() || !formData.modoPreparo.trim() || !formData.idEstado) {
       setFormError('Preencha os campos obrigatórios da receita.');
       setIsSavingRecipe(false);
       return;
@@ -418,6 +420,7 @@ export default function RecipesPage() {
                 <div className="grid gap-4 md:grid-cols-2">
                   <DetailCard label="Tempo de preparo" value={formatTempo(selectedRecipe.tempoPreparoMinutos)} />
                   <DetailCard label="Porção" value={selectedRecipe.porcao || '-'} />
+                  <DetailCard label="Rendimento" value={selectedRecipe.rendimento || '-'} />
                   <DetailCard label="Estado" value={formatEstado(selectedRecipe.estado)} />
                   <DetailCard label="Tipo de refeição" value={selectedRecipe.tipoRefeicao || '-'} />
                 </div>
@@ -622,6 +625,11 @@ export default function RecipesPage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700">Porção</label>
                   <input type="text" placeholder="Digite a porção" value={formData.porcao} onChange={(event) => setFormData((current) => ({ ...current, porcao: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Rendimento</label>
+                  <input type="text" placeholder="Digite o rendimento" value={formData.rendimento} onChange={(event) => setFormData((current) => ({ ...current, rendimento: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>

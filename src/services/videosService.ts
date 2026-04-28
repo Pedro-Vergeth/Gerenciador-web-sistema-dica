@@ -14,6 +14,7 @@ const normalizeVideoItem = (responseData: VideoApiResponse): VideoItem => {
   return {
     id: video.id ?? '',
     titulo: video.titulo ?? '',
+    descricao: video.descricao ?? '',
     duracaoSegundos: video.duracaoSegundos ?? null,
     videoUrl: video.videoUrl ?? '',
   };

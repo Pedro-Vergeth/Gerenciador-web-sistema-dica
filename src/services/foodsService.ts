@@ -27,6 +27,7 @@ const normalizeFoodItem = (responseData: FoodApiResponse): FoodItem => {
     nomePrincipal: food.nomePrincipal ?? '',
     sinonimos: food.sinonimos ?? '',
     porcao: food.porcao ?? '',
+    quantidade: food.quantidade ?? null,
     medidaCaseira: food.medidaCaseira ?? '',
     textoInformativo: food.textoInformativo ?? '',
     grupoAlimentar: food.grupoAlimentar ?? groupValue,
@@ -51,6 +52,10 @@ const buildFoodFormData = (data: CreateFoodRequestDTO | UpdateFoodRequestDTO) =>
 
   if (data.porcao !== undefined) {
     formData.append('porcao', data.porcao);
+  }
+
+  if (data.quantidade !== undefined) {
+    formData.append('quantidade', String(data.quantidade));
   }
 
   if (data.medidaCaseira !== undefined) {

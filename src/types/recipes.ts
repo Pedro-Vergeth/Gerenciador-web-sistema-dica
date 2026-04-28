@@ -53,6 +53,7 @@ export type RecipeItem = {
   tipoRefeicao: TipoRefeicao | string;
   tempoPreparoMinutos: number | null;
   porcao: string;
+  rendimento: string;
   grupoAlimentar: GrupoAlimentar;
   ingredientes: string;
   modoPreparo: string;
@@ -65,6 +66,7 @@ export type CreateRecipeRequestDTO = {
   tipoRefeicao: TipoRefeicao;
   tempoPreparoMinutos: number | null;
   porcao: string;
+  rendimento: string;
   grupoAlimentar: GrupoAlimentarOption;
   ingredientes: string;
   modoPreparo: string;
@@ -78,6 +80,7 @@ export type UpdateRecipeRequestDTO = {
   tipoRefeicao: TipoRefeicao;
   tempoPreparoMinutos: number | null;
   porcao: string;
+  rendimento: string;
   grupoAlimentar: GrupoAlimentarOption;
   ingredientes: string;
   modoPreparo: string;
@@ -90,6 +93,7 @@ export type RecipeForm = {
   tipoRefeicao: TipoRefeicao | '';
   tempoPreparoMinutos: number | '';
   porcao: string;
+  rendimento: string;
   grupoAlimentar: GrupoAlimentarOption | '';
   ingredientes: string;
   modoPreparo: string;

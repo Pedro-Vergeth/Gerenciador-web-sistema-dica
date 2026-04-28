@@ -51,6 +51,7 @@ export default function EditRecipePage() {
     tipoRefeicao: '',
     tempoPreparoMinutos: '',
     porcao: '',
+    rendimento: '',
     grupoAlimentar: '',
     ingredientes: '',
     modoPreparo: '',
@@ -83,6 +84,7 @@ export default function EditRecipePage() {
           tipoRefeicao: recipe.tipoRefeicao as CreateRecipeRequestDTO['tipoRefeicao'],
           tempoPreparoMinutos: recipe.tempoPreparoMinutos ?? '',
           porcao: recipe.porcao,
+          rendimento: recipe.rendimento,
           grupoAlimentar: normalizeRecipeGroupValue(recipe.grupoAlimentar) as EditRecipeForm['grupoAlimentar'],
           ingredientes: recipe.ingredientes,
           modoPreparo: recipe.modoPreparo,
@@ -110,7 +112,7 @@ export default function EditRecipePage() {
         throw new Error('ID da receita não informado.');
       }
 
-      if (!recipeData.titulo.trim() || !recipeData.tipoRefeicao || !recipeData.grupoAlimentar || !recipeData.ingredientes.trim() || !recipeData.modoPreparo.trim() || !recipeData.idEstado) {
+      if (!recipeData.titulo.trim() || !recipeData.tipoRefeicao || !recipeData.porcao.trim() || !recipeData.rendimento.trim() || !recipeData.grupoAlimentar || !recipeData.ingredientes.trim() || !recipeData.modoPreparo.trim() || !recipeData.idEstado) {
         throw new Error('Preencha os campos obrigatórios da receita.');
       }
 
@@ -120,6 +122,7 @@ export default function EditRecipePage() {
         tipoRefeicao: recipeData.tipoRefeicao,
         tempoPreparoMinutos: recipeData.tempoPreparoMinutos === '' ? null : Number(recipeData.tempoPreparoMinutos),
         porcao: recipeData.porcao,
+        rendimento: recipeData.rendimento,
         grupoAlimentar: recipeData.grupoAlimentar,
         ingredientes: recipeData.ingredientes,
         modoPreparo: recipeData.modoPreparo,
@@ -218,6 +221,11 @@ export default function EditRecipePage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700">Porção</label>
                   <input type="text" placeholder="Digite a porção" value={recipeData.porcao} disabled={isLoadingRecipe} onChange={(event) => setRecipeData((current) => ({ ...current, porcao: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Rendimento</label>
+                  <input type="text" placeholder="Digite o rendimento" value={recipeData.rendimento} disabled={isLoadingRecipe} onChange={(event) => setRecipeData((current) => ({ ...current, rendimento: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
