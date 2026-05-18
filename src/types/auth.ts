@@ -6,3 +6,8 @@ export interface LoginRequestDTO {
 export interface LoginResponseDTO {
   token: string;
 }
+
+export interface ChangePasswordRequestDTO {
+  senhaAtual: string;
+  novaSenha: string;
+}

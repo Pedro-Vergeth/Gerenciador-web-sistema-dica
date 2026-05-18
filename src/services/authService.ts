@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { api } from './api';
-import type { LoginRequestDTO, LoginResponseDTO } from '../types/auth';
+import type { ChangePasswordRequestDTO, LoginRequestDTO, LoginResponseDTO } from '../types/auth';
 
 const login = async (data: LoginRequestDTO) => {
     try {
@@ -30,7 +30,33 @@ const logout = async () => {
     localStorage.removeItem('@Dica API:token');
 };
 
+const changePassword = async (data: ChangePasswordRequestDTO) => {
+    const token = localStorage.getItem('@dica-api:token') ?? localStorage.getItem('@Dica API:token');
+
+    try {
+        await api.put('gerenciador/usuario/senha', data, {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+        });
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+            const status = error.response?.status;
+            const message = error.response?.data?.message;
+
+            if (status === 400 && typeof message === 'string' && message.trim()) {
+                throw new Error(message);
+            }
+
+            if (status === 401) {
+                throw new Error('Senha atual inválida. Verifique os dados e tente novamente.');
+            }
+        }
+
+        throw new Error('Não foi possível alterar a senha. Tente novamente.');
+    }
+};
+
 export const auth = {
     login,
     logout,
+    changePassword,
 };

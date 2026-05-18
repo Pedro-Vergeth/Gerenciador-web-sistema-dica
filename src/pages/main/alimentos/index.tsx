@@ -233,7 +233,7 @@ export default function FoodsPage() {
           <a href="/main/alimentos" className="font-semibold text-slate-900">Alimentos</a>
           <a href="/main/receitas" className="text-gray-700 hover:text-gray-900">Receitas</a>
           <a href="/main/videos" className="text-gray-700 hover:text-gray-900">Videos Educativos</a>
-          <a href="#" className="text-gray-700 hover:text-gray-900">Configurações</a>
+          <a href="/main/configuracoes" className="text-gray-700 hover:text-gray-900">Configurações</a>
         </nav>
 
         <div className="border-t border-gray-100 pt-6">
