@@ -45,6 +45,61 @@ export function DocIcon() {
   );
 }
 
+export function FoodSearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M10 2v20" />
+      <path d="M6 6c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4H6Z" />
+      <path d="M14 12h4" />
+      <path d="m19 17-3.5-3.5" />
+      <circle cx="17" cy="15" r="4" />
+    </svg>
+  );
+}
+
+export function RecipeSearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M5 4h9a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z" />
+      <path d="M8 8h7" />
+      <path d="M8 12h7" />
+      <path d="M18 14h2" />
+      <path d="m20 19-2.5-2.5" />
+      <circle cx="17.5" cy="16.5" r="3.5" />
+    </svg>
+  );
+}
+
+export function VideoSearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <rect x="3" y="6" width="12" height="12" rx="2" />
+      <path d="m15 10 6-3v10l-6-3" />
+      <path d="m19 19-2.5-2.5" />
+      <circle cx="17" cy="17" r="3.5" />
+    </svg>
+  );
+}
+
+export function FoodInventoryIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M12 2 4 6v5c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V6l-8-4Z" />
+      <path d="m9 12 2 2 4-4" />
+    </svg>
+  );
+}
+
+export function RecipeInventoryIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+      <path d="M12 2 3 6.5 12 11l9-4.5L12 2Z" />
+      <path d="M3 6.5V13l9 4.5 9-4.5v-6.5" />
+      <path d="M12 11v6.5" />
+    </svg>
+  );
+}
+
 export function NotificationIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
