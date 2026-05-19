@@ -44,14 +44,6 @@ function formatGrupoAlimentar(grupoAlimentar: RecipeItem['grupoAlimentar']) {
   return typeof grupoAlimentar === 'string' ? grupoAlimentar : grupoAlimentar.nome ?? '-';
 }
 
-function getSelectedEstado(estadoId: string | number | '') {
-  if (estadoId === '') {
-    return null;
-  }
-
-  return ESTADO_OPTIONS.find((estado) => estado.id === Number(estadoId)) ?? null;
-}
-
 export default function RecipesPage() {
   const navigate = useNavigate();
   const [recipes, setRecipes] = useState<RecipeItem[]>([]);
@@ -87,7 +79,6 @@ export default function RecipesPage() {
   });
   const [imagePreview, setImagePreview] = useState('');
   const [selectedRecipe, setSelectedRecipe] = useState<RecipeItem | null>(null);
-  const selectedCreateEstado = getSelectedEstado(formData.idEstado);
 
   async function handleLogout() {
     await auth.logout();

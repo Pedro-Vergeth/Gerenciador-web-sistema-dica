@@ -6,7 +6,7 @@ import FoodGroupSelect from '../../../components/foodGroupSelect';
 import sistemaImage from '../../../assets/logo.png';
 import { auth } from '../../../services/authService.ts';
 import { createFood, deleteFood, getFoods } from '../../../services/foodsService.ts';
-import type { CreateFoodRequestDTO, FoodItem } from '../../../types/foods.ts';
+import type { FoodItem } from '../../../types/foods.ts';
 import type { PageResponse } from '../../../types/pagination.ts';
 import type { FoodForm } from '../../../types/foods.ts';
 

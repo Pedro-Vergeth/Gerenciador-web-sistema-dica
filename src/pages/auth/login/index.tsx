@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { MailIcon, LockIcon, EyeIcon, InfoIcon } from '../../../components/icons/iconLogin';
 import { auth } from '../../../services/authService';
+import loginScreenImage from '../../../assets/loginScreenImage.png';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -36,7 +37,7 @@ export default function LoginPage() {
         <div className="flex min-h-screen w-full bg-[#DADADA]">
             <div className="flex items-center justify-center w-6/10">
                 <img
-                    src="/src/assets/loginScreenImage.png"
+                    src={loginScreenImage}
                     alt="Login Imagem"
                     className="w-full max-w-145.5 h-auto object-contain"
                 />

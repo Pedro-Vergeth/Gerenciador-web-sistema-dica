@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  react-vite-app:
+    build: .
+    ports:
+      - "8081:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true 

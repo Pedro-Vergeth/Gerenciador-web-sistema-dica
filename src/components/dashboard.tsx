@@ -25,7 +25,7 @@ export default function DashboardCard({
   className,
 }: DashboardCardProps) {
   return (
-    <div className={`rounded-[24px] border border-[#e9e8df] bg-white p-6 shadow-[0_1px_0_rgba(15,23,42,0.02)] ${className ?? ''}`.trim()}>
+    <div className={`rounded-2xl border border-[#e9e8df] bg-white p-6 shadow-[0_1px_0_rgba(15,23,42,0.02)] ${className ?? ''}`.trim()}>
       <div className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${accentClassName}`}>
         {icone && <span className={iconClassName}>{icone}</span>}
       </div>
