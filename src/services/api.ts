@@ -4,8 +4,10 @@ export const getAuthToken = () => {
   return localStorage.getItem('@dica-api:token') ?? localStorage.getItem('@Dica API:token');
 };
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
+
 export const api = axios.create({
-  baseURL: '/api',
+  baseURL: apiBaseUrl,
   headers: {
     'Content-Type': 'application/json',
   },

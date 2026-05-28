@@ -9,9 +9,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-.env
 .env.*
-!.env.example
+
+!.env
 
 .git
 .gitignore

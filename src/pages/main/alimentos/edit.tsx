@@ -49,9 +49,10 @@ export default function EditFoodPage() {
   const [foodData, setFoodData] = useState<EditFoodForm>({
     nomePrincipal: '',
     sinonimos: '',
-    porcao: '',
-    quantidade: '',
-    medidaCaseira: '',
+    unidade: '',
+    unidadeMedidaCaseira: '',
+    qtdParaUmCoracao: '',
+    qtdMedidaCaseira: '',
     textoInformativo: '',
     grupoAlimentar: '',
     imagem: null,
@@ -79,9 +80,10 @@ export default function EditFoodPage() {
         setFoodData({
           nomePrincipal: food.nomePrincipal,
           sinonimos: food.sinonimos,
-          porcao: food.porcao,
-          quantidade: food.quantidade ?? '',
-          medidaCaseira: food.medidaCaseira,
+          unidade: food.unidade,
+          unidadeMedidaCaseira: food.unidadeMedidaCaseira,
+          qtdParaUmCoracao: food.qtdParaUmCoracao ?? '',
+          qtdMedidaCaseira: food.qtdMedidaCaseira ?? '',
           textoInformativo: food.textoInformativo,
           grupoAlimentar: normalizeFoodGroupValue(food.grupoAlimentar),
           imagem: null,
@@ -112,9 +114,10 @@ export default function EditFoodPage() {
         id,
         nomePrincipal: foodData.nomePrincipal,
         sinonimos: foodData.sinonimos,
-        porcao: foodData.porcao,
-        quantidade: foodData.quantidade === '' ? undefined : Number(foodData.quantidade),
-        medidaCaseira: foodData.medidaCaseira,
+        unidade: foodData.unidade,
+        unidadeMedidaCaseira: foodData.unidadeMedidaCaseira,
+        qtdParaUmCoracao: foodData.qtdParaUmCoracao === '' ? undefined : Number(foodData.qtdParaUmCoracao),
+        qtdMedidaCaseira: foodData.qtdMedidaCaseira === '' ? undefined : Number(foodData.qtdMedidaCaseira),
         textoInformativo: foodData.textoInformativo,
         grupoAlimentar: foodData.grupoAlimentar || undefined,
         imagem: foodData.imagem,
@@ -193,24 +196,29 @@ export default function EditFoodPage() {
                   <input type="text" placeholder="Digite o nome principal" value={foodData.nomePrincipal} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, nomePrincipal: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
-                <div>
+                <div className="lg:col-span-2">
                   <label className="mb-2 block text-sm font-medium text-slate-700">Sinônimos</label>
                   <input type="text" placeholder="Digite os sinônimos" value={foodData.sinonimos} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, sinonimos: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Porção</label>
-                  <input type="text" placeholder="Digite a porção" value={foodData.porcao} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, porcao: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade para um coração</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={foodData.qtdParaUmCoracao} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, qtdParaUmCoracao: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade</label>
-                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={foodData.quantidade} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, quantidade: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Unidade</label>
+                  <input type="text" placeholder="Digite a unidade" value={foodData.unidade} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, unidade: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Medida caseira</label>
-                  <input type="text" placeholder="Digite a medida caseira" value={foodData.medidaCaseira} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, medidaCaseira: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade medida caseira</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={foodData.qtdMedidaCaseira} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, qtdMedidaCaseira: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Unidade medida caseira</label>
+                  <input type="text" placeholder="Digite a unidade medida caseira" value={foodData.unidadeMedidaCaseira} disabled={isLoadingFood} onChange={(event) => setFoodData((current) => ({ ...current, unidadeMedidaCaseira: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <FoodGroupSelect

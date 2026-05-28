@@ -44,7 +44,7 @@ const buildRecipeFormData = (data: CreateRecipeRequestDTO | UpdateRecipeRequestD
   formData.append('titulo', data.titulo);
   formData.append('tipoRefeicao', data.tipoRefeicao);
 
-  if (data.tempoPreparoMinutos !== null && data.tempoPreparoMinutos !== undefined) {
+  if (typeof data.tempoPreparoMinutos === 'number' && Number.isFinite(data.tempoPreparoMinutos)) {
     formData.append('tempoPreparoMinutos', String(data.tempoPreparoMinutos));
   }
 

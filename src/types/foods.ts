@@ -11,9 +11,10 @@ export type FoodItem = {
   id: string | number;
   nomePrincipal: string;
   sinonimos: string;
-  porcao: string;
-  quantidade: number | null;
-  medidaCaseira: string;
+  unidade: string;
+  unidadeMedidaCaseira: string;
+  qtdParaUmCoracao: number | null;
+  qtdMedidaCaseira: number | null;
   textoInformativo: string;
   grupoAlimentar: GrupoAlimentar;
   imagem64: string;
@@ -22,9 +23,10 @@ export type FoodItem = {
 export type CreateFoodRequestDTO = {
   nomePrincipal: string;
   sinonimos: string;
-  porcao: string;
-  quantidade: number;
-  medidaCaseira: string;
+  unidade: string;
+  unidadeMedidaCaseira: string;
+  qtdParaUmCoracao: number;
+  qtdMedidaCaseira: number;
   textoInformativo: string;
   grupoAlimentar: GrupoAlimentarOption;
   imagem: File | null;
@@ -33,9 +35,10 @@ export type CreateFoodRequestDTO = {
 export type FoodForm = {
   nomePrincipal: string;
   sinonimos: string;
-  porcao: string;
-  quantidade: number | '';
-  medidaCaseira: string;
+  unidade: string;
+  unidadeMedidaCaseira: string;
+  qtdParaUmCoracao: number | '';
+  qtdMedidaCaseira: number | '';
   textoInformativo: string;
   grupoAlimentar: CreateFoodRequestDTO['grupoAlimentar'] | '';
   imagem: File | null;
@@ -47,9 +50,10 @@ export type UpdateFoodRequestDTO = {
   id: string | number;
   nomePrincipal?: string;
   sinonimos?: string;
-  porcao?: string;
-  quantidade?: number;
-  medidaCaseira?: string;
+  unidade?: string;
+  unidadeMedidaCaseira?: string;
+  qtdParaUmCoracao?: number;
+  qtdMedidaCaseira?: number;
   textoInformativo?: string;
   grupoAlimentar?: GrupoAlimentarOption;
   imagem?: File | null;

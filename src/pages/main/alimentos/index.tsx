@@ -57,9 +57,10 @@ export default function FoodsPage() {
   const [formData, setFormData] = useState<FoodForm>({
     nomePrincipal: '',
     sinonimos: '',
-    porcao: '',
-    quantidade: '',
-    medidaCaseira: '',
+    unidade: '',
+    unidadeMedidaCaseira: '',
+    qtdParaUmCoracao: '',
+    qtdMedidaCaseira: '',
     textoInformativo: '',
     grupoAlimentar: '',
     imagem: null,
@@ -111,9 +112,10 @@ export default function FoodsPage() {
     setFormData({
       nomePrincipal: '',
       sinonimos: '',
-      porcao: '',
-      quantidade: '',
-      medidaCaseira: '',
+      unidade: '',
+      unidadeMedidaCaseira: '',
+      qtdParaUmCoracao: '',
+      qtdMedidaCaseira: '',
       textoInformativo: '',
       grupoAlimentar: '',
       imagem: null,
@@ -132,8 +134,8 @@ export default function FoodsPage() {
       return;
     }
 
-    if (formData.quantidade === '' || Number.isNaN(Number(formData.quantidade))) {
-      setFormError('Informe uma quantidade válida.');
+    if (formData.qtdParaUmCoracao === '' || Number.isNaN(Number(formData.qtdParaUmCoracao))) {
+      setFormError('Informe uma quantidade válida para um coração.');
       setIsSavingFood(false);
       return;
     }
@@ -148,9 +150,10 @@ export default function FoodsPage() {
       await createFood({
         nomePrincipal: formData.nomePrincipal,
         sinonimos: formData.sinonimos,
-        porcao: formData.porcao,
-        quantidade: Number(formData.quantidade),
-        medidaCaseira: formData.medidaCaseira,
+        unidade: formData.unidade,
+        unidadeMedidaCaseira: formData.unidadeMedidaCaseira,
+        qtdParaUmCoracao: Number(formData.qtdParaUmCoracao),
+        qtdMedidaCaseira: formData.qtdMedidaCaseira === '' ? 0 : Number(formData.qtdMedidaCaseira),
         textoInformativo: formData.textoInformativo,
         grupoAlimentar: formData.grupoAlimentar,
         imagem: formData.imagem,
@@ -338,8 +341,10 @@ export default function FoodsPage() {
                     <th className="px-2 py-4 font-normal">Imagem</th>
                     <th className="px-2 py-4 font-normal">Nome principal</th>
                     <th className="px-2 py-4 font-normal">Sinônimos</th>
-                    <th className="px-2 py-4 font-normal">Quantidade</th>
-                    <th className="px-2 py-4 font-normal">Porção</th>
+                    <th className="px-2 py-4 font-normal">Qtd. coração</th>
+                    <th className="px-2 py-4 font-normal">Unidade</th>
+                    <th className="px-2 py-4 font-normal">Qtd. medida caseira</th>
+                    <th className="px-2 py-4 font-normal">Unidade medida caseira</th>
                     <th className="px-2 py-4 font-normal">Grupo alimentar</th>
                     <th className="px-2 py-4 font-normal text-center">Ações</th>
                   </tr>
@@ -347,7 +352,7 @@ export default function FoodsPage() {
                 <tbody className="text-sm text-slate-900">
                   {loading ? (
                     <tr className="border-b border-slate-200 bg-white">
-                      <td className="px-6 py-6 text-slate-500" colSpan={7}>Carregando alimentos...</td>
+                      <td className="px-6 py-6 text-slate-500" colSpan={9}>Carregando alimentos...</td>
                     </tr>
                   ) : foods.length > 0 ? (
                     foods.map((food) => (
@@ -356,8 +361,10 @@ export default function FoodsPage() {
                         imagePreview={getFoodImagePreview(food.imagem64)}
                         nomePrincipal={food.nomePrincipal}
                         sinonimos={food.sinonimos}
-                        quantidade={food.quantidade}
-                        porcao={food.porcao}
+                        unidade={food.unidade}
+                        qtdParaUmCoracao={food.qtdParaUmCoracao}
+                        unidadeMedidaCaseira={food.unidadeMedidaCaseira}
+                        qtdMedidaCaseira={food.qtdMedidaCaseira}
                         grupoAlimentar={getGrupoAlimentarLabel(food.grupoAlimentar)}
                         onView={() => handleOpenFoodDetails(food)}
                         onEdit={() => navigate(`/main/alimentos/edit/${food.id}`)}
@@ -366,7 +373,7 @@ export default function FoodsPage() {
                     ))
                   ) : (
                     <tr className="border-b border-slate-200 bg-white">
-                      <td className="px-6 py-6 text-slate-500" colSpan={7}>Nenhum alimento encontrado.</td>
+                      <td className="px-6 py-6 text-slate-500" colSpan={9}>Nenhum alimento encontrado.</td>
                     </tr>
                   )}
                 </tbody>
@@ -431,9 +438,10 @@ export default function FoodsPage() {
 
                 <div className="grid gap-4 md:grid-cols-2">
                   <DetailCard label="Sinônimos" value={selectedFood.sinonimos || '-'} />
-                  <DetailCard label="Porção" value={selectedFood.porcao || '-'} />
-                  <DetailCard label="Quantidade" value={selectedFood.quantidade === null || selectedFood.quantidade === undefined ? '-' : String(selectedFood.quantidade)} />
-                  <DetailCard label="Medida caseira" value={selectedFood.medidaCaseira || '-'} />
+                  <DetailCard label="Unidade" value={selectedFood.unidade || '-'} />
+                  <DetailCard label="Qtd. para um coração" value={selectedFood.qtdParaUmCoracao === null || selectedFood.qtdParaUmCoracao === undefined ? '-' : String(selectedFood.qtdParaUmCoracao)} />
+                  <DetailCard label="Unidade medida caseira" value={selectedFood.unidadeMedidaCaseira || '-'} />
+                  <DetailCard label="Qtd. medida caseira" value={selectedFood.qtdMedidaCaseira === null || selectedFood.qtdMedidaCaseira === undefined ? '-' : String(selectedFood.qtdMedidaCaseira)} />
                   <DetailCard label="Grupo alimentar" value={selectedFood.grupoAlimentar ? getGrupoAlimentarLabel(selectedFood.grupoAlimentar) : '-'} />
                 </div>
 
@@ -576,21 +584,26 @@ export default function FoodsPage() {
                   <label className="mb-2 block text-sm font-medium text-slate-700">Sinônimos</label>
                   <input type="text" placeholder="Digite os sinônimos" value={formData.sinonimos} onChange={(event) => setFormData((current) => ({ ...current, sinonimos: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
-
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Porção</label>
-                  <input type="text" placeholder="Digite a porção" value={formData.porcao} onChange={(event) => setFormData((current) => ({ ...current, porcao: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade para um coração</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={formData.qtdParaUmCoracao} onChange={(event) => setFormData((current) => ({ ...current, qtdParaUmCoracao: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade</label>
-                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={formData.quantidade} onChange={(event) => setFormData((current) => ({ ...current, quantidade: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Unidade</label>
+                  <input type="text" placeholder="Digite a unidade" value={formData.unidade} onChange={(event) => setFormData((current) => ({ ...current, unidade: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700">Medida caseira</label>
-                  <input type="text" placeholder="Digite a medida caseira" value={formData.medidaCaseira} onChange={(event) => setFormData((current) => ({ ...current, medidaCaseira: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Quantidade medida caseira</label>
+                  <input type="number" step="0.01" min="0" placeholder="Ex.: 1.5" value={formData.qtdMedidaCaseira} onChange={(event) => setFormData((current) => ({ ...current, qtdMedidaCaseira: event.target.value === '' ? '' : Number(event.target.value) }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
                 </div>
+                <div>
+                  <label className="mb-2 block text-sm font-medium text-slate-700">Unidade medida caseira</label>
+                  <input type="text" placeholder="Digite a unidade medida caseira" value={formData.unidadeMedidaCaseira} onChange={(event) => setFormData((current) => ({ ...current, unidadeMedidaCaseira: event.target.value }))} className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition-colors placeholder:text-slate-400 focus:border-blue-500" />
+                </div>
+
+
 
                 <div className="lg:col-span-2">
                   <FoodGroupSelect
@@ -619,7 +632,7 @@ export default function FoodsPage() {
   );
 }
 
-function FoodRow({ imagePreview, nomePrincipal, sinonimos, quantidade, porcao, grupoAlimentar, onView, onEdit, onDelete }: { imagePreview: string; nomePrincipal: string; sinonimos: string; quantidade: number | null; porcao: string; grupoAlimentar: string; onView: () => void; onEdit: () => void; onDelete: () => void; }) {
+function FoodRow({ imagePreview, nomePrincipal, sinonimos, unidade, qtdParaUmCoracao, unidadeMedidaCaseira, qtdMedidaCaseira, grupoAlimentar, onView, onEdit, onDelete }: { imagePreview: string; nomePrincipal: string; sinonimos: string; unidade: string; qtdParaUmCoracao: number | null; unidadeMedidaCaseira: string; qtdMedidaCaseira: number | null; grupoAlimentar: string; onView: () => void; onEdit: () => void; onDelete: () => void; }) {
   return (
     <tr className="border-b border-slate-200 bg-white">
       <td className="px-2 py-6">
@@ -637,8 +650,10 @@ function FoodRow({ imagePreview, nomePrincipal, sinonimos, quantidade, porcao, g
       </td>
       <td className="px-2 py-6 font-medium text-slate-900">{nomePrincipal}</td>
       <td className="px-2 py-6 text-slate-700">{sinonimos || '-'}</td>
-      <td className="px-2 py-6 text-slate-700">{quantidade === null || quantidade === undefined ? '-' : quantidade}</td>
-      <td className="px-2 py-6 text-slate-700">{porcao}</td>
+      <td className="px-2 py-6 text-slate-700">{unidade || '-'}</td>
+      <td className="px-2 py-6 text-slate-700">{qtdParaUmCoracao === null || qtdParaUmCoracao === undefined ? '-' : qtdParaUmCoracao}</td>
+      <td className="px-2 py-6 text-slate-700">{unidadeMedidaCaseira || '-'}</td>
+      <td className="px-2 py-6 text-slate-700">{qtdMedidaCaseira === null || qtdMedidaCaseira === undefined ? '-' : qtdMedidaCaseira}</td>
       <td className="px-2 py-6 text-slate-700">{grupoAlimentar}</td>
       <td className="px-2 py-6">
         <div className="flex items-center justify-center gap-4">

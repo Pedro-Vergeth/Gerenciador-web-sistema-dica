@@ -26,9 +26,10 @@ const normalizeFoodItem = (responseData: FoodApiResponse): FoodItem => {
     id: food.id ?? '',
     nomePrincipal: food.nomePrincipal ?? '',
     sinonimos: food.sinonimos ?? '',
-    porcao: food.porcao ?? '',
-    quantidade: food.quantidade ?? null,
-    medidaCaseira: food.medidaCaseira ?? '',
+    unidade: food.unidade ?? '',
+    unidadeMedidaCaseira: food.unidadeMedidaCaseira ?? '',
+    qtdParaUmCoracao: food.qtdParaUmCoracao ?? null,
+    qtdMedidaCaseira: food.qtdMedidaCaseira ?? null,
     textoInformativo: food.textoInformativo ?? '',
     grupoAlimentar: food.grupoAlimentar ?? groupValue,
     imagem64: food.imagem64 ?? food.imagemBase64 ?? food.imagemUrl ?? food.imagem ?? '',
@@ -50,16 +51,20 @@ const buildFoodFormData = (data: CreateFoodRequestDTO | UpdateFoodRequestDTO) =>
     formData.append('sinonimos', data.sinonimos);
   }
 
-  if (data.porcao !== undefined) {
-    formData.append('porcao', data.porcao);
+  if (data.unidade !== undefined) {
+    formData.append('unidade', data.unidade);
   }
 
-  if (data.quantidade !== undefined) {
-    formData.append('quantidade', String(data.quantidade));
+  if (data.unidadeMedidaCaseira !== undefined) {
+    formData.append('unidadeMedidaCaseira', data.unidadeMedidaCaseira);
   }
 
-  if (data.medidaCaseira !== undefined) {
-    formData.append('medidaCaseira', data.medidaCaseira);
+  if (data.qtdParaUmCoracao !== undefined) {
+    formData.append('qtdParaUmCoracao', String(data.qtdParaUmCoracao));
+  }
+
+  if (data.qtdMedidaCaseira !== undefined) {
+    formData.append('qtdMedidaCaseira', String(data.qtdMedidaCaseira));
   }
 
   if (data.textoInformativo !== undefined) {
