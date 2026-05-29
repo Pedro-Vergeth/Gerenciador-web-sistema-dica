@@ -206,6 +206,7 @@ export default function VideosPage() {
           <a href="/main/alimentos" className="text-gray-700 hover:text-gray-900">Alimentos</a>
           <a href="/main/receitas" className="text-gray-700 hover:text-gray-900">Receitas</a>
           <a href="/main/videos" className="font-semibold text-slate-900">Videos Educativos</a>
+          <a href="/main/video-introdutorio" className="text-gray-700 hover:text-gray-900">Vídeo Introdutório</a>
           <a href="/main/configuracoes" className="text-gray-700 hover:text-gray-900">Configurações</a>
         </nav>
 

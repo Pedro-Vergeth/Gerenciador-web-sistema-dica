@@ -1,8 +1,9 @@
 import { type ChangeEvent, type FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import sistemaImage from '../../../assets/logo.png';
-import { MoonIcon, NotificationIcon, SearchIcon, UserIcon } from '../../../components/icons/sharedIcons';
+import { MoonIcon, NotificationIcon, SearchIcon, TrashIcon, UserIcon } from '../../../components/icons/sharedIcons';
 import { auth } from '../../../services/authService.ts';
+import { deleteVideoIntroducao as deleteVideoIntroducaoRequest } from '../../../services/videoIntroducaoService.ts';
 import {
   createVideoIntroducao,
   getVideoIntroducao,
@@ -42,10 +43,15 @@ export default function VideoIntroducaoPage() {
   const [videoIntroducao, setVideoIntroducao] = useState<VideoIntroducaoItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [formError, setFormError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [deleteError, setDeleteError] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [selectedFilePreview, setSelectedFilePreview] = useState('');
+  const [deletePassword, setDeletePassword] = useState('');
+  const [showDeletePassword, setShowDeletePassword] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   async function handleLogout() {
     await auth.logout();
@@ -105,6 +111,50 @@ export default function VideoIntroducaoPage() {
     setSelectedFile(null);
     setFormError('');
     setSuccessMessage('');
+  }
+
+  function handleOpenDeleteModal() {
+    setDeleteError('');
+    setDeletePassword('');
+    setShowDeletePassword(false);
+    setIsDeleteModalOpen(true);
+  }
+
+  function handleCloseDeleteModal() {
+    setDeleteError('');
+    setDeletePassword('');
+    setShowDeletePassword(false);
+    setIsDeleteModalOpen(false);
+  }
+
+  async function handleDeleteVideoIntroducao(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!deletePassword.trim()) {
+      setDeleteError('Informe sua senha para confirmar a exclusão.');
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError('');
+
+    try {
+      await deleteVideoIntroducaoRequest(deletePassword);
+      setVideoIntroducao(null);
+      setSelectedFile(null);
+      setSelectedFilePreview('');
+      setSuccessMessage('Vídeo introdutório excluído com sucesso.');
+      handleCloseDeleteModal();
+    } catch (error) {
+      if (error instanceof Error && error.message) {
+        setDeleteError(error.message);
+        return;
+      }
+
+      setDeleteError('Não foi possível excluir o vídeo introdutório. Verifique a senha e tente novamente.');
+    } finally {
+      setIsDeleting(false);
+    }
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -294,6 +344,16 @@ export default function VideoIntroducaoPage() {
                       >
                         Limpar seleção
                       </button>
+
+                      <button
+                        type="button"
+                        onClick={handleOpenDeleteModal}
+                        disabled={!videoIntroducao}
+                        className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition-colors hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        <TrashIcon />
+                        Excluir vídeo
+                      </button>
                     </div>
                   </form>
                 </article>
@@ -329,6 +389,78 @@ export default function VideoIntroducaoPage() {
           </div>
         </section>
       </div>
+
+      {isDeleteModalOpen ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 px-4" onClick={handleCloseDeleteModal}>
+          <div className="w-full max-w-130 rounded-[28px] bg-white px-10 py-10 shadow-[0_30px_80px_rgba(15,23,42,0.22)]" onClick={(event) => event.stopPropagation()}>
+            <div className="flex items-start justify-between gap-4">
+              <h2 className="text-[1.55rem] font-medium text-slate-900">Excluir vídeo introdutório</h2>
+              <button type="button" onClick={handleCloseDeleteModal} className="rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900" aria-label="Fechar popup">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+              </button>
+            </div>
+
+            <div className="mt-8 flex justify-center">
+              <div className="flex h-24 w-24 items-center justify-center text-red-500">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.55" strokeLinecap="round" strokeLinejoin="round" className="h-20 w-20">
+                  <path d="M12 2.4 5 5.8V12c0 4.8 3.3 9 7 10 3.7-1 7-5.2 7-10V5.8Z" />
+                  <path d="M12 8v5" />
+                  <path d="M12 16.5h.01" />
+                </svg>
+              </div>
+            </div>
+
+            <p className="mx-auto mt-8 max-w-90 text-center text-[0.96rem] leading-6 text-slate-700">Somente administradores podem executar essa função. Por favor, digite sua senha para confirmar a exclusão do vídeo introdutório:</p>
+
+            <form className="mt-8" onSubmit={handleDeleteVideoIntroducao}>
+              <label className="flex items-center gap-3 rounded-[18px] border border-slate-200 bg-[#f8f8f8] px-4 py-3 shadow-[0_4px_10px_rgba(15,23,42,0.14)] transition-colors focus-within:border-red-500">
+                <span className="text-slate-500">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5"><rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                </span>
+
+                <input
+                  type={showDeletePassword ? 'text' : 'password'}
+                  value={deletePassword}
+                  onChange={(event) => setDeletePassword(event.target.value)}
+                  placeholder="Senha"
+                  className="w-full bg-transparent text-slate-800 outline-none placeholder:text-slate-500"
+                  autoComplete="current-password"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowDeletePassword((current) => !current)}
+                  className="text-slate-500 transition-colors hover:text-slate-800"
+                  aria-label={showDeletePassword ? 'Ocultar senha' : 'Mostrar senha'}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    {showDeletePassword ? (
+                      <>
+                        <path d="M3 3l18 18" />
+                        <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+                        <path d="M9.9 5.2A10.4 10.4 0 0 1 12 5c5.5 0 9.5 5 10 7-.4 1.1-1.3 2.6-2.6 4.1" />
+                        <path d="M6.2 6.2C3.8 8.2 2.5 10.7 2 12c.4 1.1 1.3 2.6 2.6 4.1 1.7 1.8 4.2 3.9 7.4 3.9 1.4 0 2.7-.3 3.9-.8" />
+                      </>
+                    ) : (
+                      <>
+                        <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </>
+                    )}
+                  </svg>
+                </button>
+              </label>
+
+              {deleteError ? <p className="mt-4 text-sm font-medium text-red-600">{deleteError}</p> : null}
+
+              <div className="mt-10 flex items-center justify-center gap-14">
+                <button type="button" onClick={handleCloseDeleteModal} className="text-[0.95rem] font-medium text-red-500 transition-colors hover:text-red-600">Cancelar</button>
+                <button type="submit" disabled={isDeleting} className="min-w-37.5 rounded-full bg-red-600 px-8 py-3 text-[0.95rem] font-semibold text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-70">{isDeleting ? 'Excluindo...' : 'Excluir'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

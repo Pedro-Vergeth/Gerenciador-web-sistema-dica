@@ -79,3 +79,25 @@ export const updateVideoIntroducao = async (data: VideoIntroducaoUpdateDTO) => {
 
   return normalizeVideoIntroducao(response.data);
 };
+
+type ValidatePasswordResponse = {
+  valid: boolean;
+  message: string;
+};
+
+export const deleteVideoIntroducao = async (password: string) => {
+  const token = getAuthToken();
+
+  const response = await api.post<ValidatePasswordResponse>('gerenciador/usuario/validar-senha', { password }, {
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+
+  if (!response.data.valid) {
+    throw new Error(response.data.message || 'Senha inválida');
+  }
+
+  await api.delete('gerenciador/video-introdutorio', {
+    data: { password },
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+  });
+};
